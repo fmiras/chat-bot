@@ -1,0 +1,13 @@
+{
+  "name": "chat",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./app",
+    "test": "node_modules/.bin/mocha -w"
+  },
+  "dependencies": {
+    "express": "~4.13.1",
+    "socket.io": "^1.4.5"
+  }
+}
