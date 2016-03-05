@@ -7,8 +7,8 @@ app.chat = (function () {
             $('#m').val('');
             return false;
         });
-        socket.on('chat message', function (msg) {
-            $('#messages').append($('<li>').text(msg));
+        socket.on('chat message', function (data) {
+            $('#messages').append($('<li>').text(data.socketId + " " + data.msg));
         });
     }
 
