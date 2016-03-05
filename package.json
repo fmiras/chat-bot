@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./app",
-    "test": "node_modules/.bin/mocha -w"
+    "start": "node ./app"
   },
   "dependencies": {
     "express": "~4.13.1",
