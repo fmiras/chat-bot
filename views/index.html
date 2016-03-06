@@ -3,22 +3,41 @@
 <head>
 
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
     <title>Socket.IO chat</title>
 
 </head>
 <body>
 
+<div id="user-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Welcome!</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please enter a username: </p>
+                <input id="user-text" class="col-xs-12" type="text">
+            </div>
+            <div class="modal-footer">
+                <button id="user-submit" type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <ul id="messages"></ul>
 
-<form action="">
+<form id="chat" action="">
     <input id="m" autocomplete="off"/>
     <button>Send</button>
 </form>
 
-<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="js/lib/jquery-2.2.1.min.js"></script>
+<script src="js/lib/bootstrap.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="js/app.js"></script>
-<script src="js/chat/chat.js"></script>
+<script src="js/app/app.js"></script>
+<script src="js/app/chat/chat.js"></script>
 
 </body>
 </html>
