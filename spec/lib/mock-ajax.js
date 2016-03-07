@@ -32,20 +32,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 //Module wrapper to support both browser and CommonJS environment
 (function (root, factory) {
-    if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
-        // CommonJS
-        var jasmineRequire = require('jasmine-core');
-        module.exports = factory(root, function() {
-            return jasmineRequire;
-        });
-    } else {
-        // Browser globals
-        window.MockAjax = factory(root, getJasmineRequireObj);
-    }
+  if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
+    // CommonJS
+    var jasmineRequire = require('jasmine-core');
+    module.exports = factory(root, function () {
+      return jasmineRequire;
+    });
+  } else {
+    // Browser globals
+    window.MockAjax = factory(root, getJasmineRequireObj);
+  }
 }(typeof window !== 'undefined' ? window : global, function (global, getJasmineRequireObj) {
 
-// 
-getJasmineRequireObj().ajax = function(jRequire) {
+  //
+  getJasmineRequireObj().ajax = function (jRequire) {
   var $ajax = {};
 
   $ajax.RequestStub = jRequire.AjaxRequestStub();
@@ -60,7 +60,7 @@ getJasmineRequireObj().ajax = function(jRequire) {
   return $ajax.MockAjax;
 };
 
-getJasmineRequireObj().AjaxEvent = function() {
+  getJasmineRequireObj().AjaxEvent = function () {
   function now() {
     return new Date().getTime();
   }
@@ -103,16 +103,17 @@ getJasmineRequireObj().AjaxEvent = function() {
   XMLHttpRequestProgressEvent.prototype = XMLHttpRequestEvent.prototype;
 
   return {
-    event: function(xhr, type) {
+    event: function (xhr, type) {
       return new XMLHttpRequestEvent(xhr, type);
     },
 
-    progressEvent: function(xhr, type) {
+    progressEvent: function (xhr, type) {
       return new XMLHttpRequestProgressEvent(xhr, type);
-    }
+    },
   };
 };
-getJasmineRequireObj().AjaxEventBus = function(eventFactory) {
+
+  getJasmineRequireObj().AjaxEventBus = function (eventFactory) {
   function EventBus(source) {
     this.eventList = {};
     this.source = source;
@@ -128,7 +129,7 @@ getJasmineRequireObj().AjaxEventBus = function(eventFactory) {
       return list.indexOf(thing);
     }
 
-    for(var i = 0; i < list.length; i++) {
+    for (var i = 0; i < list.length; i++) {
       if (thing === list[i]) {
         return i;
       }
@@ -137,11 +138,11 @@ getJasmineRequireObj().AjaxEventBus = function(eventFactory) {
     return -1;
   }
 
-  EventBus.prototype.addEventListener = function(event, callback) {
+  EventBus.prototype.addEventListener = function (event, callback) {
     ensureEvent(this.eventList, event).push(callback);
   };
 
-  EventBus.prototype.removeEventListener = function(event, callback) {
+  EventBus.prototype.removeEventListener = function (event, callback) {
     var index = findIndex(this.eventList[event], callback);
 
     if (index >= 0) {
@@ -149,7 +150,7 @@ getJasmineRequireObj().AjaxEventBus = function(eventFactory) {
     }
   };
 
-  EventBus.prototype.trigger = function(event) {
+  EventBus.prototype.trigger = function (event) {
     var evt;
 
     // Event 'readystatechange' is should be a simple event.
@@ -170,12 +171,12 @@ getJasmineRequireObj().AjaxEventBus = function(eventFactory) {
     }
   };
 
-  return function(source) {
+  return function (source) {
     return new EventBus(source);
   };
 };
 
-getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
+  getJasmineRequireObj().AjaxFakeRequest = function (eventBusFactory) {
   function extend(destination, source, propertiesToSkip) {
     propertiesToSkip = propertiesToSkip || [];
     for (var property in source) {
@@ -183,6 +184,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
         destination[property] = source[property];
       }
     }
+
     return destination;
   }
 
@@ -192,11 +194,12 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
         return true;
       }
     }
+
     return false;
   }
 
   function wrapProgressEvent(xhr, eventName) {
-    return function() {
+    return function () {
       if (xhr[eventName]) {
         xhr[eventName].apply(xhr, arguments);
       }
@@ -219,7 +222,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       "Can't build XHR.response for XHR.responseType of '",
       type,
       "'.",
-      "XHR.response must be explicitly stubbed"
+      'XHR.response must be explicitly stubbed',
     ];
     return msg.join(' ');
   }
@@ -256,7 +259,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
           }
         }
       } else {
-        headers.push({ name: "Content-Type", value: contentType || "application/json" });
+        headers.push({ name: 'Content-Type', value: contentType || 'application/json' });
       }
 
       return headers;
@@ -266,8 +269,8 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       if (global.DOMParser) {
         return (new global.DOMParser()).parseFromString(xmlText, 'text/xml');
       } else {
-        var xml = new global.ActiveXObject("Microsoft.XMLDOM");
-        xml.async = "false";
+        var xml = new global.ActiveXObject('Microsoft.XMLDOM');
+        xml.async = 'false';
         xml.loadXML(xmlText);
         return xml;
       }
@@ -281,13 +284,14 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       } else if (contentType.match(/\+xml$/)) {
         return parseXml(responseText, 'text/xml');
       }
+
       return null;
     }
 
     var iePropertiesThatCannotBeCopied = ['responseBody', 'responseText', 'responseXML', 'status', 'statusText', 'responseTimeout', 'responseURL'];
     extend(FakeXMLHttpRequest.prototype, new global.XMLHttpRequest(), iePropertiesThatCannotBeCopied);
     extend(FakeXMLHttpRequest.prototype, {
-      open: function() {
+      open: function () {
         this.method = arguments[0];
         this.url = arguments[1];
         this.username = arguments[3];
@@ -297,22 +301,22 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
         this.eventBus.trigger('readystatechange');
       },
 
-      setRequestHeader: function(header, value) {
-        if(this.requestHeaders.hasOwnProperty(header)) {
+      setRequestHeader: function (header, value) {
+        if (this.requestHeaders.hasOwnProperty(header)) {
           this.requestHeaders[header] = [this.requestHeaders[header], value].join(', ');
         } else {
           this.requestHeaders[header] = value;
         }
       },
 
-      overrideMimeType: function(mime) {
+      overrideMimeType: function (mime) {
         this.overriddenMimeType = mime;
       },
 
-      abort: function() {
+      abort: function () {
         this.readyState = 0;
         this.status = 0;
-        this.statusText = "abort";
+        this.statusText = 'abort';
         this.eventBus.trigger('readystatechange');
         this.eventBus.trigger('progress');
         this.eventBus.trigger('abort');
@@ -330,17 +334,17 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       onloadend: null,
       onreadystatechange: null,
 
-      addEventListener: function() {
+      addEventListener: function () {
         this.eventBus.addEventListener.apply(this.eventBus, arguments);
       },
 
-      removeEventListener: function(event, callback) {
+      removeEventListener: function (event, callback) {
         this.eventBus.removeEventListener.apply(this.eventBus, arguments);
       },
 
       status: null,
 
-      send: function(data) {
+      send: function (data) {
         this.params = data;
         this.eventBus.trigger('loadstart');
 
@@ -356,11 +360,11 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
         }
       },
 
-      contentType: function() {
+      contentType: function () {
         return findHeader('content-type', this.requestHeaders);
       },
 
-      data: function() {
+      data: function () {
         if (!this.params) {
           return {};
         }
@@ -368,10 +372,10 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
         return paramParser.findParser(this).parse(this.params);
       },
 
-      getResponseHeader: function(name) {
+      getResponseHeader: function (name) {
         name = name.toLowerCase();
         var resultHeader;
-        for(var i = 0; i < this.responseHeaders.length; i++) {
+        for (var i = 0; i < this.responseHeaders.length; i++) {
           var header = this.responseHeaders[i];
           if (name === header.name.toLowerCase()) {
             if (resultHeader) {
@@ -381,15 +385,17 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
             }
           }
         }
+
         return resultHeader;
       },
 
-      getAllResponseHeaders: function() {
+      getAllResponseHeaders: function () {
         var responseHeaders = [];
         for (var i = 0; i < this.responseHeaders.length; i++) {
           responseHeaders.push(this.responseHeaders[i].name + ': ' +
             this.responseHeaders[i].value);
         }
+
         return responseHeaders.join('\r\n') + '\r\n';
       },
 
@@ -398,37 +404,36 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       responseType: null,
       responseURL: null,
 
-      responseValue: function() {
-        switch(this.responseType) {
+      responseValue: function () {
+        switch (this.responseType) {
           case null:
-          case "":
-          case "text":
-            return this.readyState >= 3 ? this.responseText : "";
-          case "json":
+          case '':
+          case 'text':
+            return this.readyState >= 3 ? this.responseText : '';
+          case 'json':
             return JSON.parse(this.responseText);
-          case "arraybuffer":
+          case 'arraybuffer':
             throw unconvertibleResponseTypeMessage('arraybuffer');
-          case "blob":
+          case 'blob':
             throw unconvertibleResponseTypeMessage('blob');
-          case "document":
+          case 'document':
             return this.responseXML;
         }
       },
 
-
-      respondWith: function(response) {
+      respondWith: function (response) {
         if (this.readyState === 4) {
-          throw new Error("FakeXMLHttpRequest already completed");
+          throw new Error('FakeXMLHttpRequest already completed');
         }
 
         this.status = response.status;
-        this.statusText = response.statusText || "";
+        this.statusText = response.statusText || '';
         this.responseHeaders = normalizeHeaders(response.responseHeaders, response.contentType);
         this.readyState = 2;
         this.eventBus.trigger('readystatechange');
 
-        this.responseText = response.responseText || "";
-        this.responseType = response.responseType || "";
+        this.responseText = response.responseText || '';
+        this.responseType = response.responseType || '';
         this.responseURL = response.responseURL || null;
         this.readyState = 4;
         this.responseXML = getResponseXml(response.responseText, this.getResponseHeader('content-type') || '');
@@ -448,10 +453,11 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
         this.eventBus.trigger('loadend');
       },
 
-      responseTimeout: function() {
+      responseTimeout: function () {
         if (this.readyState === 4) {
-          throw new Error("FakeXMLHttpRequest already completed");
+          throw new Error('FakeXMLHttpRequest already completed');
         }
+
         this.readyState = 4;
         jasmine.clock().tick(30000);
         this.eventBus.trigger('readystatechange');
@@ -460,16 +466,17 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
         this.eventBus.trigger('loadend');
       },
 
-      responseError: function() {
+      responseError: function () {
         if (this.readyState === 4) {
-          throw new Error("FakeXMLHttpRequest already completed");
+          throw new Error('FakeXMLHttpRequest already completed');
         }
+
         this.readyState = 4;
         this.eventBus.trigger('readystatechange');
         this.eventBus.trigger('progress');
         this.eventBus.trigger('error');
         this.eventBus.trigger('loadend');
-      }
+      },
     });
 
     return FakeXMLHttpRequest;
@@ -478,7 +485,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
   return fakeRequest;
 };
 
-getJasmineRequireObj().MockAjax = function($ajax) {
+  getJasmineRequireObj().MockAjax = function ($ajax) {
   function MockAjax(global) {
     var requestTracker = new $ajax.RequestTracker(),
       stubTracker = new $ajax.StubTracker(),
@@ -486,18 +493,19 @@ getJasmineRequireObj().MockAjax = function($ajax) {
       realAjaxFunction = global.XMLHttpRequest,
       mockAjaxFunction = $ajax.fakeRequest(global, requestTracker, stubTracker, paramParser);
 
-    this.install = function() {
+    this.install = function () {
       if (global.XMLHttpRequest === mockAjaxFunction) {
-        throw "MockAjax is already installed.";
+        throw 'MockAjax is already installed.';
       }
 
       global.XMLHttpRequest = mockAjaxFunction;
     };
 
-    this.uninstall = function() {
+    this.uninstall = function () {
       if (global.XMLHttpRequest !== mockAjaxFunction) {
-        throw "MockAjax not installed.";
+        throw 'MockAjax not installed.';
       }
+
       global.XMLHttpRequest = realAjaxFunction;
 
       this.stubs.reset();
@@ -505,13 +513,13 @@ getJasmineRequireObj().MockAjax = function($ajax) {
       paramParser.reset();
     };
 
-    this.stubRequest = function(url, data, method) {
+    this.stubRequest = function (url, data, method) {
       var stub = new $ajax.RequestStub(url, data, method);
       stubTracker.addStub(stub);
       return stub;
     };
 
-    this.withMock = function(closure) {
+    this.withMock = function (closure) {
       this.install();
       try {
         closure();
@@ -520,7 +528,7 @@ getJasmineRequireObj().MockAjax = function($ajax) {
       }
     };
 
-    this.addCustomParamParser = function(parser) {
+    this.addCustomParamParser = function (parser) {
       paramParser.add(parser);
     };
 
@@ -531,21 +539,23 @@ getJasmineRequireObj().MockAjax = function($ajax) {
   return MockAjax;
 };
 
-getJasmineRequireObj().AjaxParamParser = function() {
+  getJasmineRequireObj().AjaxParamParser = function () {
   function ParamParser() {
     var defaults = [
       {
-        test: function(xhr) {
+        test: function (xhr) {
           return (/^application\/json/).test(xhr.contentType());
         },
+
         parse: function jsonParser(paramString) {
           return JSON.parse(paramString);
-        }
+        },
       },
       {
-        test: function(xhr) {
+        test: function (xhr) {
           return true;
         },
+
         parse: function naiveParser(paramString) {
           var data = {};
           var params = paramString.split('&');
@@ -556,28 +566,29 @@ getJasmineRequireObj().AjaxParamParser = function() {
             data[key] = data[key] || [];
             data[key].push(decodeURIComponent(kv[1]));
           }
+
           return data;
-        }
-      }
+        },
+      },
     ];
     var paramParsers = [];
 
-    this.add = function(parser) {
+    this.add = function (parser) {
       paramParsers.unshift(parser);
     };
 
-    this.findParser = function(xhr) {
-        for(var i in paramParsers) {
-          var parser = paramParsers[i];
-          if (parser.test(xhr)) {
-            return parser;
-          }
+    this.findParser = function (xhr) {
+      for (var i in paramParsers) {
+        var parser = paramParsers[i];
+        if (parser.test(xhr)) {
+          return parser;
         }
+      }
     };
 
-    this.reset = function() {
+    this.reset = function () {
       paramParsers = [];
-      for(var i in defaults) {
+      for (var i in defaults) {
         paramParsers.push(defaults[i]);
       }
     };
@@ -588,13 +599,13 @@ getJasmineRequireObj().AjaxParamParser = function() {
   return ParamParser;
 };
 
-getJasmineRequireObj().AjaxRequestStub = function() {
+  getJasmineRequireObj().AjaxRequestStub = function () {
   var RETURN = 0,
       ERROR = 1,
       TIMEOUT = 2;
 
   function RequestStub(url, stubData, method) {
-    var normalizeQuery = function(query) {
+    var normalizeQuery = function (query) {
       return query ? query.split('&').sort().join('&') : undefined;
     };
 
@@ -610,7 +621,7 @@ getJasmineRequireObj().AjaxRequestStub = function() {
     this.data = (stubData instanceof RegExp) ? stubData : normalizeQuery(stubData);
     this.method = method;
 
-    this.andReturn = function(options) {
+    this.andReturn = function (options) {
       this.action = RETURN;
       this.status = options.status || 200;
 
@@ -621,27 +632,27 @@ getJasmineRequireObj().AjaxRequestStub = function() {
       this.responseURL = options.responseURL;
     };
 
-    this.isReturn = function() {
+    this.isReturn = function () {
       return this.action === RETURN;
     };
 
-    this.andError = function() {
+    this.andError = function () {
       this.action = ERROR;
     };
 
-    this.isError = function() {
+    this.isError = function () {
       return this.action === ERROR;
     };
 
-    this.andTimeout = function() {
+    this.andTimeout = function () {
       this.action = TIMEOUT;
     };
 
-    this.isTimeout = function() {
+    this.isTimeout = function () {
       return this.action === TIMEOUT;
     };
 
-    this.matches = function(fullUrl, data, method) {
+    this.matches = function (fullUrl, data, method) {
       var urlMatches = false;
       fullUrl = fullUrl.toString();
       if (this.url instanceof RegExp) {
@@ -652,12 +663,14 @@ getJasmineRequireObj().AjaxRequestStub = function() {
             query = urlSplit[1];
         urlMatches = this.url === url && this.query === normalizeQuery(query);
       }
+
       var dataMatches = false;
       if (this.data instanceof RegExp) {
         dataMatches = this.data.test(data);
       } else {
         dataMatches = !this.data || this.data === normalizeQuery(data);
       }
+
       return urlMatches && dataMatches && (!this.method || this.method === method);
     };
   }
@@ -665,44 +678,44 @@ getJasmineRequireObj().AjaxRequestStub = function() {
   return RequestStub;
 };
 
-getJasmineRequireObj().AjaxRequestTracker = function() {
+  getJasmineRequireObj().AjaxRequestTracker = function () {
   function RequestTracker() {
     var requests = [];
 
-    this.track = function(request) {
+    this.track = function (request) {
       requests.push(request);
     };
 
-    this.first = function() {
+    this.first = function () {
       return requests[0];
     };
 
-    this.count = function() {
+    this.count = function () {
       return requests.length;
     };
 
-    this.reset = function() {
+    this.reset = function () {
       requests = [];
     };
 
-    this.mostRecent = function() {
+    this.mostRecent = function () {
       return requests[requests.length - 1];
     };
 
-    this.at = function(index) {
+    this.at = function (index) {
       return requests[index];
     };
 
-    this.filter = function(url_to_match) {
+    this.filter = function (url_to_match) {
       var matching_requests = [];
 
       for (var i = 0; i < requests.length; i++) {
         if (url_to_match instanceof RegExp &&
             url_to_match.test(requests[i].url)) {
-            matching_requests.push(requests[i]);
+          matching_requests.push(requests[i]);
         } else if (url_to_match instanceof Function &&
             url_to_match(requests[i])) {
-            matching_requests.push(requests[i]);
+          matching_requests.push(requests[i]);
         } else {
           if (requests[i].url === url_to_match) {
             matching_requests.push(requests[i]);
@@ -717,19 +730,19 @@ getJasmineRequireObj().AjaxRequestTracker = function() {
   return RequestTracker;
 };
 
-getJasmineRequireObj().AjaxStubTracker = function() {
+  getJasmineRequireObj().AjaxStubTracker = function () {
   function StubTracker() {
     var stubs = [];
 
-    this.addStub = function(stub) {
+    this.addStub = function (stub) {
       stubs.push(stub);
     };
 
-    this.reset = function() {
+    this.reset = function () {
       stubs = [];
     };
 
-    this.findStub = function(url, data, method) {
+    this.findStub = function (url, data, method) {
       for (var i = stubs.length - 1; i >= 0; i--) {
         var stub = stubs[i];
         if (stub.matches(url, data, method)) {
@@ -742,10 +755,9 @@ getJasmineRequireObj().AjaxStubTracker = function() {
   return StubTracker;
 };
 
+  var jRequire = getJasmineRequireObj();
+  var MockAjax = jRequire.ajax(jRequire);
+  jasmine.Ajax = new MockAjax(global);
 
-    var jRequire = getJasmineRequireObj();
-    var MockAjax = jRequire.ajax(jRequire);
-    jasmine.Ajax = new MockAjax(global);
-
-    return MockAjax;
+  return MockAjax;
 }));
