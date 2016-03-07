@@ -3,10 +3,6 @@ app.chat = (function () {
     var username = "Anonymous";
 
     function init() {
-        bindModalEvents()
-    };
-
-    function bindModalEvents() {
         $('#user-modal').modal({backdrop: 'static', keyboard: false});
         $('#user-modal').modal('show');
         $('#user-submit').on('click', function () {

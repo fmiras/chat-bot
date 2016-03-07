@@ -43,3 +43,10 @@ form button {
 #messages li:nth-child(odd) {
     background: #eee;
 }
+
+.entry-title{
+    font-family: 'untitled-font-2';
+    text-align: center;
+    font-size: 40px;
+    color: black;
+}
