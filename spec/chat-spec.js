@@ -36,12 +36,11 @@ describe('emitHistory', function () {
 });
 
 describe('addUser', function () {
-  it('should add a username to a socket', function (done) {
+  it('should add a username to a socket', function () {
     const users = {};
     const socketId = 'newSocketId';
     const username = 'John Smith';
     service.addUser(users, socketId, username);
     expect(users[socketId]).toBe(username);
-    done();
   });
 });
