@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./app"
+    "start": "node ./app",
+    "test": "jasmine"
   },
   "dependencies": {
     "express": "~4.13.1",
+    "jasmine-sinon": "^0.4.0",
     "socket.io": "^1.4.5",
-    "sync-request" : "3.0.0"
+    "sync-request": "3.0.0"
   }
 }
