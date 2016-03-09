@@ -1,0 +1,12 @@
+{
+  "wildcard": "Sorry i don't know how to answer to that... not yet.",
+  "greeting": "Hello {:name}, nice to meet you.",
+  "naming": {
+    "success": "Your name is {:name}.",
+    "error": "I don't know your name."
+  },
+  "currencyConversion": {
+    "success": "{:pesos} pesos are {:dollars} dollars.",
+    "error": "{:pesos} is not a number. I can't convert it to dollars."
+  }
+}
