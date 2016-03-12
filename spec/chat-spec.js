@@ -1,4 +1,3 @@
-'use strict';
 var service = require('../lib/chat/service');
 var sinon = require('sinon');
 require('jasmine-sinon');
