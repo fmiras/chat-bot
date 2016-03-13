@@ -25,21 +25,33 @@ describe('convertPesosToDollars', function () {
         USDARS: 15.03,
       },
     };
+    var promise = new Promise(function (resolve, reject) {
+      resolve(currencyDataJsonStub);
+    });
 
-    currencyUtil.__set__('getCurrencyDataJson', sinon.stub().returns(currencyDataJsonStub));
-
+    currencyUtil.__set__('getCurrencyData', sinon.stub().returns(promise));
     const pesos = 5;
-    const dollars = currencyUtil.convertPesosToDollars(pesos);
-    expect(dollars).toBe(0.33);
-    done();
+
+    var spy = function (dollars) {
+      expect(dollars).toBe(0.33);
+      done();
+    };
+
+    currencyUtil.convertPesosToDollars(pesos, spy);
   });
 
   it('should return null if the api is not available', function (done) {
-    currencyUtil.__set__('getCurrencyDataJson', sinon.stub().returns(null));
+    var promise = new Promise(function (resolve, reject) {
+      reject();
+    });
 
+    currencyUtil.__set__('getCurrencyData', sinon.stub().returns(promise));
     const pesos = 5;
-    const dollars = currencyUtil.convertPesosToDollars(pesos);
-    expect(dollars).toBe(null);
-    done();
+    var spy = function (dollars) {
+      expect(dollars).toBe(null);
+      done();
+    };
+
+    const dollars = currencyUtil.convertPesosToDollars(pesos, spy);
   });
 });
