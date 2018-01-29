@@ -2,9 +2,10 @@
   "name": "chatbot",
   "version": "0.0.1",
   "scripts": {
-    "start": "node ./lib/",
+    "start": "node .",
     "test": "standard && jasmine"
   },
+  "main": "lib",
   "standard": {
     "ignore": [
       "spec/lib",
