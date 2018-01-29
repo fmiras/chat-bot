@@ -7,15 +7,15 @@
     "test": "jasmine"
   },
   "dependencies": {
-    "express": "~4.13.1",
-    "request-promise": "^2.0.1",
-    "socket.io": "^1.4.5"
+    "express": "4.13.1",
+    "request-promise": "2.0.1",
+    "socket.io": "1.4.5"
   },
   "devDependencies": {
-    "jasmine-sinon": "^0.4.0",
-    "jscs": "^2.11.0",
-    "proxyquire": "^1.7.4",
-    "rewire": "^2.5.1",
-    "sinon": "^1.17.3"
+    "jasmine-sinon": "0.4.0",
+    "jscs": "2.11.0",
+    "proxyquire": "1.7.4",
+    "rewire": "2.5.1",
+    "sinon": "1.17.3"
   }
 }
