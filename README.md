@@ -1,15 +1,14 @@
-# simple-bot-chat
+# Chatbot 
 
-This app is just a simple bot chat made with socket.io framework, it has a chat for users feature and a chatbot mode where you can just talk to a bot with very simple answers.
+This app is just [socket.io](https://socket.io) extended tutorial , it has a chat for users and a chatbot mode where you can just talk to a bot with very simple answers.
 
 To run the project:
 
-- Git and node.js must be installed
-    
+- Git and node.js must be installed  
 - Run in command line:
     
-        git clone git@github.com:fmiras/socket-chat.git
-        cd simple-bot-chat
+        git clone git@github.com:fmiras/chatbot.git
+        cd chatbot
         npm install
         npm start
         
@@ -17,10 +16,4 @@ To run the project:
 
 To test the project:
 
-- Install jasmin globally
-    
-        npm install -g jasmine
-
-- Run in command line:
-    
         npm test
