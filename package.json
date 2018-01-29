@@ -6,12 +6,24 @@
     "start": "node ./lib/",
     "test": "standard && jasmine"
   },
+  "standard": {
+    "ignore": [
+      "spec/lib",
+      "public"
+    ],
+    "globals": [
+      "describe",
+      "expect",
+      "it"
+    ]
+  },
   "dependencies": {
     "express": "4.13.1",
     "request-promise": "2.0.1",
     "socket.io": "1.4.5"
   },
   "devDependencies": {
+    "jasmine": "2.9.0",
     "jasmine-sinon": "0.4.0",
     "proxyquire": "1.7.4",
     "rewire": "2.5.1",

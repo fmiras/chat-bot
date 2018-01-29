@@ -1,17 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var path = require('path');
+const express = require('express')
+const router = express.Router()
+const path = require('path')
 
-router.get('/', function (req, res, next) {
-  res.sendFile(path.resolve('views/index.html'));
-});
+router.get('/', (req, res) => {
+  res.sendFile(path.resolve('views/index.html'))
+})
 
-router.get('/chat', function (req, res, next) {
-  res.sendFile(path.resolve('views/chat.html'));
-});
+router.get('/chat', (req, res) => {
+  res.sendFile(path.resolve('views/chat.html'))
+})
 
-router.get('/bot', function (req, res, next) {
-  res.sendFile(path.resolve('views/bot.html'));
-});
+router.get('/bot', (req, res) => {
+  res.sendFile(path.resolve('views/bot.html'))
+})
 
-module.exports = router;
+module.exports = router
