@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./lib/",
-    "test": "jasmine"
+    "test": "standard && jasmine"
   },
   "dependencies": {
     "express": "4.13.1",
@@ -13,9 +13,9 @@
   },
   "devDependencies": {
     "jasmine-sinon": "0.4.0",
-    "jscs": "2.11.0",
     "proxyquire": "1.7.4",
     "rewire": "2.5.1",
-    "sinon": "1.17.3"
+    "sinon": "1.17.3",
+    "standard": "10.0.3"
   }
 }
