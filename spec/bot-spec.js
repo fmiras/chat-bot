@@ -1,30 +1,31 @@
-var botResponse = require('../config/bot-response')
-var proxyquire = require('proxyquire').noPreserveCache()
-var sinon = require('sinon')
-var rewire = require('rewire')
-var bot = rewire('../lib/chat/bot')
+const proxyquire = require('proxyquire').noPreserveCache()
+const sinon = require('sinon')
+const rewire = require('rewire')
 require('jasmine-sinon')
+
+const responses = require('../config/bot-responses')
+let bot = rewire('../lib/chat/bot')
 
 describe('comunicate', () => {
   it('should emit a wildcard message for any request', () => {
     const msg = "Hello! What's up?"
     const spy = sinon.spy()
     bot.comunicate(msg, spy)
-    expect(spy).toHaveBeenCalledWith(botResponse.wildcard)
+    expect(spy).toHaveBeenCalledWith(responses.wildcard)
   })
 
   it('should save a name and say hello', () => {
     const msg = 'Hello! My name is John Smith'
     const spy = sinon.spy()
     bot.comunicate(msg, spy)
-    expect(spy).toHaveBeenCalledWith(botResponse.greeting.replace('{:name}', 'John Smith'))
+    expect(spy).toHaveBeenCalledWith(responses.greeting.replace('{:name}', 'John Smith'))
   })
 
   it('should capitalize and save a name and say hello', () => {
     const msg = 'Hello! My name is john smith'
     const spy = sinon.spy()
     bot.comunicate(msg, spy)
-    expect(spy).toHaveBeenCalledWith(botResponse.greeting.replace('{:name}', 'John Smith'))
+    expect(spy).toHaveBeenCalledWith(responses.greeting.replace('{:name}', 'John Smith'))
     expect(bot.__get__('name')).toBe('John Smith')
   })
 
@@ -33,7 +34,7 @@ describe('comunicate', () => {
     const msg = 'What is my name?'
     const spy = sinon.spy()
     bot.comunicate(msg, spy)
-    expect(spy).toHaveBeenCalledWith(botResponse.naming.success.replace('{:name}', 'John Smith'))
+    expect(spy).toHaveBeenCalledWith(responses.naming.success.replace('{:name}', 'John Smith'))
   })
 
   it('should say i dont know your name', () => {
@@ -41,7 +42,7 @@ describe('comunicate', () => {
     const msg = 'What is my name?'
     const spy = sinon.spy()
     bot.comunicate(msg, spy)
-    expect(spy).toHaveBeenCalledWith(botResponse.naming.error)
+    expect(spy).toHaveBeenCalledWith(responses.naming.error)
   })
 
   it('should convert the amount of pesos that the user indicates to pesos', () => {
@@ -57,7 +58,7 @@ describe('comunicate', () => {
     const spy = sinon.spy()
     bot.comunicate(msg, spy)
     expect(spy)
-        .toHaveBeenCalledWith(botResponse.currencyConversion.success
+        .toHaveBeenCalledWith(responses.currencyConversion.success
             .replace('{:pesos}', '76')
             .replace('{:dollars}', '5.06'))
   })
@@ -66,6 +67,6 @@ describe('comunicate', () => {
     const msg = 'Convert as2g pesos to dollars'
     const spy = sinon.spy()
     bot.comunicate(msg, spy)
-    expect(spy).toHaveBeenCalledWith(botResponse.currencyConversion.error.replace('{:pesos}', 'as2g'))
+    expect(spy).toHaveBeenCalledWith(responses.currencyConversion.error.replace('{:pesos}', 'as2g'))
   })
 })
