@@ -1,4 +1,3 @@
-require('jasmine-sinon')
 const { capitalizeWords } = require('../lib/util/string')
 
 describe('capitalizeWords', () => {
